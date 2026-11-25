@@ -3,46 +3,46 @@
 <head>
 <meta charset="utf-8">
 <title>La Via Perduta — testi delle tavole</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <style>
   *{box-sizing:border-box}
-  body{margin:0;font-family:system-ui,Segoe UI,Arial,sans-serif;background:#2b2722;color:#eee;display:flex;height:100vh;overflow:hidden}
-  #lista{width:110px;overflow-y:auto;background:#1f1c18;padding:6px}
-  #lista button{display:block;width:100%;margin:0 0 4px;padding:6px;border:0;border-radius:4px;background:#3a342c;color:#eee;cursor:pointer;font-size:14px}
-  #lista button.on{background:#c79a4b;color:#111;font-weight:bold}
-  #lista button .n{float:right;font-size:11px;opacity:.8}
-  #centro{flex:1;display:flex;flex-direction:column;align-items:center;overflow:auto;padding:10px}
-  #barra{display:flex;gap:10px;align-items:center;margin-bottom:8px}
-  #barra button{padding:6px 14px;border:0;border-radius:4px;background:#3a342c;color:#eee;cursor:pointer;font-size:16px}
-  #stato{font-size:13px;opacity:.75;min-width:120px}
-  #pagina{position:relative;display:inline-block;cursor:crosshair;line-height:0}
-  #pagina img{height:calc(100vh - 70px);width:auto;display:block;user-select:none}
-  .pin{position:absolute;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;background:#e0412b;color:#fff;font:bold 13px/26px system-ui;text-align:center;border:2px solid #fff;box-shadow:0 1px 4px #0008;cursor:pointer}
-  .pin.sel{background:#2b7de0}
-  #note{width:360px;overflow-y:auto;background:#1f1c18;padding:10px}
-  #note h3{margin:4px 0 10px;font-size:15px;color:#c79a4b}
-  .nota{background:#332e27;border-radius:6px;padding:8px;margin-bottom:8px;border:2px solid transparent}
-  .nota.sel{border-color:#2b7de0}
-  .nota .num{display:inline-block;width:22px;height:22px;border-radius:50%;background:#e0412b;color:#fff;text-align:center;font:bold 12px/22px system-ui;margin-right:6px}
-  .nota select,.nota textarea,.nota input{width:100%;margin-top:5px;background:#1f1c18;color:#eee;border:1px solid #555;border-radius:4px;padding:5px;font-size:14px;font-family:inherit}
-  .nota textarea{height:70px;resize:vertical}
-  .nota .riga{display:flex;gap:6px}
-  .nota .riga select{flex:1}
-  .nota .del{float:right;background:none;border:0;color:#e88;cursor:pointer;font-size:13px}
-  .vuoto{opacity:.6;font-size:14px}
+  html,body{margin:0;height:100%;background:#2b2722;color:#eee;font-family:system-ui,Segoe UI,Arial,sans-serif}
+  #barra{position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;justify-content:center;padding:6px;background:#1f1c18}
+  #barra button,#barra select{padding:6px 12px;border:0;border-radius:4px;background:#3a342c;color:#eee;font-size:16px}
+  #stato{font-size:12px;opacity:.75;min-width:70px}
+  #centro{display:flex;justify-content:center;padding:6px}
+  #pagina{position:relative;line-height:0;max-width:100%}
+  #pagina img{display:block;max-width:100%;max-height:calc(100vh - 60px);width:auto;height:auto;user-select:none;-webkit-user-select:none}
+  .pin{position:absolute;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:#e0412b;color:#fff;font:bold 12px/24px system-ui;text-align:center;border:2px solid #fff;box-shadow:0 1px 4px #0009;cursor:pointer;z-index:2}
+  .pin.on{background:#2b7de0}
+  #editor{position:absolute;z-index:3;width:min(260px,80vw);background:rgba(25,22,18,.82);backdrop-filter:blur(2px);border:1px solid #c79a4b;border-radius:8px;padding:8px;line-height:normal;display:none}
+  #editor select,#editor textarea{width:100%;background:rgba(0,0,0,.35);color:#fff;border:1px solid #666;border-radius:4px;padding:5px;font-size:15px;font-family:inherit}
+  #editor .riga{display:flex;gap:6px;margin-bottom:6px}
+  #editor .riga select{flex:1}
+  #editor textarea{height:80px;resize:vertical}
+  #editor .bottoni{display:flex;justify-content:space-between;margin-top:6px}
+  #editor button{border:0;border-radius:4px;padding:6px 14px;font-size:15px;cursor:pointer}
+  #ok{background:#c79a4b;color:#111;font-weight:bold}
+  #del{background:none;color:#f99}
 </style>
 </head>
 <body>
-<div id="lista"></div>
-<div id="centro">
-  <div id="barra">
-    <button id="prev">◀</button><b id="titolo"></b><button id="next">▶</button>
-    <span id="stato"></span>
-  </div>
-  <div id="pagina"><img id="img" alt=""></div>
+<div id="barra">
+  <button id="prev">◀</button>
+  <select id="scelta"></select>
+  <button id="next">▶</button>
+  <span id="stato"></span>
 </div>
-<div id="note"><h3>Testi di questa tavola</h3><div id="elenco"></div>
-  <p class="vuoto">Clicca un punto della tavola per aggiungere un testo. Si salva da solo.</p></div>
+<div id="centro">
+  <div id="pagina">
+    <img id="img" alt="">
+    <div id="editor">
+      <div class="riga"><select id="chi"></select><select id="tipo"></select></div>
+      <textarea id="testo" placeholder="Scrivi il testo…"></textarea>
+      <div class="bottoni"><button id="del">elimina</button><button id="ok">OK</button></div>
+    </div>
+  </div>
+</div>
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
@@ -50,81 +50,83 @@ const sb = createClient('https://vsjthriabitepaztnpic.supabase.co','eyJhbGciOiJI
 const T = 'commenti_lettering';
 const CHI = ['Narratore','Vivenna','Loras','Drull','Thalyssra','Tobias','Rhogan','Xona','Serenthil','Dorvan','Vagabondo','Capitano','Soldato','Ribelle','Oste','Erborista','Rumore','Altro'];
 const TIPI = ['balloon','didascalia','pensiero','sussurro','urlo','rumore'];
-let tavole = [], i = 0, note = [], sel = null, conteggi = {};
 const $ = id => document.getElementById(id);
-const stato = t => { $('stato').textContent = t; };
+let tavole = [], i = 0, note = [], aperta = null, conteggi = {}, timer;
+const stato = t => $('stato').textContent = t;
+$('chi').innerHTML = CHI.map(c=>`<option>${c}</option>`).join('');
+$('tipo').innerHTML = TIPI.map(c=>`<option>${c}</option>`).join('');
 
 async function init(){
-  tavole = await (await fetch('tavole.json')).json();
+  tavole = await (await fetch('tavole.json', {cache:'no-store'})).json();
   const h = location.hash.replace('#','');
   if (tavole.includes(h)) i = tavole.indexOf(h);
-  await contaTutte(); disegnaLista(); apri();
-}
-async function contaTutte(){
   const { data } = await sb.from(T).select('tavola');
-  conteggi = {}; (data||[]).forEach(r => conteggi[r.tavola] = (conteggi[r.tavola]||0)+1);
+  (data||[]).forEach(r => conteggi[r.tavola] = (conteggi[r.tavola]||0)+1);
+  apri();
 }
-function disegnaLista(){
-  $('lista').innerHTML = tavole.map((t,k)=>`<button class="${k===i?'on':''}" data-k="${k}">${t}<span class="n">${conteggi[t]||''}</span></button>`).join('');
-  $('lista').querySelectorAll('button').forEach(b=>b.onclick=()=>{i=+b.dataset.k;apri();});
+function menu(){
+  $('scelta').innerHTML = tavole.map((t,k)=>`<option value="${k}" ${k===i?'selected':''}>Tavola ${t}${conteggi[t]?' ('+conteggi[t]+')':''}</option>`).join('');
 }
 async function apri(){
-  const t = tavole[i]; location.hash = t; sel = null;
-  $('titolo').textContent = 'Tavola ' + t; $('img').src = 'tavole/tav-' + t + '.jpg';
-  disegnaLista(); stato('caricamento…');
+  chiudi(); const t = tavole[i]; location.hash = t; menu();
+  $('img').src = 'tavole/tav-' + t + '.jpg'; stato('…');
   const { data, error } = await sb.from(T).select('*').eq('tavola', t).order('created_at');
-  if (error) { stato('errore: ' + error.message); return; }
-  note = data || []; disegna(); stato('');
+  if (error) { stato('errore'); alert(error.message); return; }
+  note = data || []; pins(); stato('');
 }
-function disegna(){
+function pins(){
   document.querySelectorAll('.pin').forEach(p=>p.remove());
   note.forEach((n,k)=>{
-    const p = document.createElement('div'); p.className = 'pin' + (sel===n.id?' sel':'');
-    p.style.left = (n.x*100)+'%'; p.style.top = (n.y*100)+'%'; p.textContent = k+1;
-    p.onclick = e => { e.stopPropagation(); seleziona(n.id); };
+    const p = document.createElement('div');
+    p.className = 'pin' + (aperta===n.id?' on':''); p.textContent = k+1;
+    p.style.left = n.x*100+'%'; p.style.top = n.y*100+'%';
+    p.onclick = e => { e.stopPropagation(); aperta===n.id ? chiudi() : mostra(n); };
     $('pagina').appendChild(p);
   });
-  $('elenco').innerHTML = note.map((n,k)=>`
-    <div class="nota ${sel===n.id?'sel':''}" data-id="${n.id}">
-      <span class="num">${k+1}</span><button class="del">elimina</button>
-      <div class="riga">
-        <select class="chi">${CHI.map(c=>`<option ${c===n.chi?'selected':''}>${c}</option>`).join('')}</select>
-        <select class="tipo">${TIPI.map(c=>`<option ${c===n.tipo?'selected':''}>${c}</option>`).join('')}</select>
-      </div>
-      <textarea class="testo" placeholder="Scrivi il testo…">${(n.testo||'').replace(/</g,'&lt;')}</textarea>
-    </div>`).join('');
-  $('elenco').querySelectorAll('.nota').forEach(d=>{
-    const id = d.dataset.id;
-    d.onclick = () => { if (sel!==id) seleziona(id, false); };
-    d.querySelector('.chi').onchange = e => { salva(id,{chi:e.target.value}); if(e.target.value==='Narratore') aggiorna(id,'didascalia',d); if(e.target.value==='Rumore') aggiorna(id,'rumore',d); };
-    d.querySelector('.tipo').onchange = e => salva(id,{tipo:e.target.value});
-    let tm; d.querySelector('.testo').oninput = e => { stato('…'); clearTimeout(tm); tm=setTimeout(()=>salva(id,{testo:e.target.value}),700); };
-    d.querySelector('.del').onclick = async ev => { ev.stopPropagation(); if(!confirm('Eliminare questo testo?')) return;
-      await sb.from(T).delete().eq('id',id); note = note.filter(n=>n.id!==id); conteggi[tavole[i]]--; disegna(); disegnaLista(); stato('eliminato'); };
-  });
 }
-function aggiorna(id,tipo,d){ d.querySelector('.tipo').value = tipo; salva(id,{tipo}); }
-function seleziona(id, focus=true){
-  sel = id; disegna();
-  const d = document.querySelector(`.nota[data-id="${id}"]`);
-  if (d){ d.scrollIntoView({block:'nearest'}); if(focus) d.querySelector('.testo').focus(); }
+function mostra(n){
+  aperta = n.id; pins();
+  const ed = $('editor'); ed.style.display = 'block';
+  $('chi').value = n.chi || 'Narratore'; $('tipo').value = n.tipo || 'balloon'; $('testo').value = n.testo || '';
+  const W = $('pagina').clientWidth, H = $('pagina').clientHeight;
+  let x = n.x*W + 16, y = n.y*H + 16;
+  if (x + ed.offsetWidth > W) x = n.x*W - ed.offsetWidth - 16;
+  if (y + ed.offsetHeight > H) y = n.y*H - ed.offsetHeight - 16;
+  ed.style.left = Math.max(0,x)+'px'; ed.style.top = Math.max(0,y)+'px';
+  $('testo').focus();
 }
-async function salva(id, campi){
-  const n = note.find(x=>x.id===id); Object.assign(n, campi);
-  const { error } = await sb.from(T).update({...campi, updated_at:new Date().toISOString()}).eq('id',id);
-  stato(error ? 'errore: '+error.message : 'salvato ✓');
+function chiudi(){ aperta = null; $('editor').style.display = 'none'; pins(); }
+async function salva(campi){
+  const n = note.find(x=>x.id===aperta); if (!n) return; Object.assign(n, campi); stato('…');
+  const { error } = await sb.from(T).update({...campi, updated_at:new Date().toISOString()}).eq('id', n.id);
+  stato(error ? 'errore' : 'salvato ✓');
 }
-$('pagina').onclick = async e => {
+$('chi').onchange = e => { const c = e.target.value;
+  if (c==='Narratore') $('tipo').value='didascalia'; if (c==='Rumore') $('tipo').value='rumore';
+  salva({chi:c, tipo:$('tipo').value}); };
+$('tipo').onchange = e => salva({tipo:e.target.value});
+$('testo').oninput = e => { stato('…'); clearTimeout(timer); timer = setTimeout(()=>salva({testo:e.target.value}), 600); };
+async function conferma(){ clearTimeout(timer); const t = $('testo').value.trim();
+  if (!t) { await sb.from(T).delete().eq('id', aperta); note = note.filter(n=>n.id!==aperta); conteggi[tavole[i]]--; menu(); chiudi(); stato(''); return; }
+  await salva({testo:$('testo').value}); chiudi(); }
+$('ok').onclick = async e => { e.stopPropagation(); await conferma(); };
+$('del').onclick = async e => { e.stopPropagation(); if (!confirm('Eliminare questo testo?')) return;
+  await sb.from(T).delete().eq('id', aperta); note = note.filter(n=>n.id!==aperta);
+  conteggi[tavole[i]]--; menu(); chiudi(); stato('eliminato'); };
+$('editor').onclick = e => e.stopPropagation();
+$('img').onclick = async e => {
+  if (aperta) { await conferma(); return; }
   const r = $('img').getBoundingClientRect();
-  const x = (e.clientX - r.left)/r.width, y = (e.clientY - r.top)/r.height;
-  stato('salvataggio…');
+  const x = (e.clientX-r.left)/r.width, y = (e.clientY-r.top)/r.height;
+  stato('…');
   const { data, error } = await sb.from(T).insert({tavola:tavole[i], x, y, chi:'Narratore', tipo:'didascalia', testo:''}).select().single();
-  if (error) { stato('errore: '+error.message); return; }
-  note.push(data); conteggi[tavole[i]]=(conteggi[tavole[i]]||0)+1; disegnaLista(); seleziona(data.id); stato('salvato ✓');
+  if (error) { stato('errore'); alert(error.message); return; }
+  note.push(data); conteggi[tavole[i]] = (conteggi[tavole[i]]||0)+1; menu(); mostra(data); stato('salvato ✓');
 };
-$('prev').onclick = () => { if(i>0){i--;apri();} };
-$('next').onclick = () => { if(i<tavole.length-1){i++;apri();} };
-document.addEventListener('keydown', e => { if (e.target.tagName==='TEXTAREA') return;
+$('scelta').onchange = e => { i = +e.target.value; apri(); };
+$('prev').onclick = () => { if (i>0){ i--; apri(); } };
+$('next').onclick = () => { if (i<tavole.length-1){ i++; apri(); } };
+document.addEventListener('keydown', e => { if (['TEXTAREA','SELECT'].includes(e.target.tagName)) return;
   if (e.key==='ArrowLeft') $('prev').click(); if (e.key==='ArrowRight') $('next').click(); });
 init();
 </script>
